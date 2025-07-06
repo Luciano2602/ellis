@@ -1,0 +1,26 @@
+# Versão do Docker Compose
+#version: '3.8' # Não é obrigatório
+
+# Definição dos serviços (contêineres)
+services:
+  # Serviço da sua aplicação Python/FastAPI
+  app:
+    build: . # Constrói a imagem a partir do Dockerfile no diretório atual
+    container_name: api # Nome do contêiner para fácil identificação
+    ports:
+      - "8000:8000" # Mapeia a porta 8000 do seu computador para a porta 8000 do contêiner
+    # Monta o diretório atual dentro do contêiner no caminho /app
+    # Isso permite que as alterações no código sejam refletidas em tempo real (hot-reload)
+    volumes:
+      - .:/app
+    # environment:
+    #  - PYTHONUNBUFFERED=1 # Garante que os logs do Python apareçam
+    # networks:
+    #  - app-networks
+    
+    # Define uma política de reinicialização
+    # restart: unless-stopped
+# Redes customozadas (boa prática, mesmo para único serviço, para futuras expansões)
+# networks:
+#  app-networks:
+#    driver: bridge

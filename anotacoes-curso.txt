@@ -1,0 +1,93 @@
+Palavra chave: Marvel | Ellis | YAML
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-- 3° aula 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+Cloud Run -> Rodar o container em forma servels ou seja, sem servidor, basicamente pega um container do docker e o google gera tudo, e gerencia
+Cloud build
+Artifactregistry -> Repositorio de img do goolge
+Cli do google cloud: gcloud
+
+Serveles, se ninguem estiver acessando, ele escalar pra zero, não tem custo no periodo que nem esta usando.
+
+[32] southamerica-east1 -> É um servidor do gloogle que esta em sp
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-- 2° aula 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+yaml -> Estrutura a app, CI automatizar as coisas é pelo fim do trabalho manual. Parar com coisas de repetiticas, e deixar os ambientes mais proximos possiveis (fectory app)
+
+comandos para rodar o docker.
+docker compose up -d (roda em backgroud)
+
+git actions (Pipe line uma sequencia de instruções, igual o git actions)
+
+CI -> Continue integration
+CD -> Continue deploy
+Ex: no projeto atual, a um novo commit, vc pode mandar ele buildar, criar img, e assim por diante.
+
+git remote add origin https://github.com/Luciano2602/ellis.git
+
+A ideia é sempre versionar as img´s, convensão senver numerar para mijor (troca coisas grandes) minor (coisas mequenas)
+
+** construindo a img do projeto
+No github, ao selecionar o repositorio, tem o git actions, ja no git actions tem a configuração e la tem o docker, é so clicar em cima.
+
+Na proxima tela, tera a parte de configuracao do yml.
+
+quando tiver um push alguma coisa vai acontecer. Jobs, vai buildar e fazer salva com a tag latest (ultima versao), nao é uma boa pratica, o ideial é enumerar igual semantic version, no padrão esta pegando a data, o buil . ja entende que é Dockerfile, mas se especificar ele pega um outro.
+
+cód do Actions:
+
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+
+em Ci, da para rodar os testes automatizados, analise statica das dependencias do proejto, ver se tem alguma lib com vulnerabilidade.
+-----------------------------------------------------------------------------------------------------------------------------------------------
+-- 1° aula 
+-----------------------------------------------------------------------------------------------------------------------------------------------
+docker era fechado e em 2013 foi código aberto, dentro do docker é como se fosse um container onde se leva tudo, dependencias do projeto e tudo mais, e ele vai td junto, então independente. 
+
+VM é mais pesada.
+
+A ideia é que seja menor possivél a img do docker, quando ele nasce e morra atendente as demandas da msm forma.
+
+Boa pratica, atenda apenas 1 recurso... ter img com 1 e 2 gigas, nao é boa pratica jogar banco de dados dentro.
+
+Serveles que é sem servidor, não precisa de maquina virtual.
+
+Dockerfile eh uma definição do que vai ser rodado quando esse container subir, criar um arquivo chamado Dockerfile, não precisa de extensão pois o nome ja é a extensao
+
+Todo Dockerfile vem de uma base, então vem de um from, pode ser de varios repositorios de imagem, mas o docker tem o doker hub que é o maior repositorio de imagem do docker.
+
+Como tem uma liguagem em python, ir no hub buscar a imagem no dockerhub, sempre que baixar olhar as labels das imagens, ver sempre a imagem verificada, o simbolo verde parecendo uma lampada.
+
+alpine é a mais simples, geralmente sempre funciona e mais recente.
+
+documentacao da escrita do dockerfile: dockerfile reference
+
+Docker ignore, eh um comando para o docker não levar os arquivos para dentro do container
+
+docker componse -> mais robusta, como se fosse uma pipi line, quer rodar aplicação com banco para teste
+
+Rodando o projeto no vs code, subindo a imagem do contaneir: docker build -t api
+o "api" poderia ser qlq nome
+
+Rodando para subir o container: docker run -p 8000:8000 api
+O primeiro 8080 é a porta do container e a segunda é a porta da aplicação.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
